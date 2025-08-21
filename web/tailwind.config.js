@@ -7,6 +7,9 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Open Sans', ...theme.fontFamily.sans]
+      },
+      colors: {
+        'blue-base': '#2C4091'
       }
     },
   },
