@@ -1,15 +1,15 @@
-import { ListLinksContentWidget } from "./list-links-item";
-import { ListLinksHeaderWidget } from "./list-links-header";
+import { ListLinksItem } from "./list-links-item";
+import { ListLinksHeader } from "./list-links-header";
 
 
 export function ListLinksWidget() {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 w-full">
             <div>
-                <ListLinksHeaderWidget />
+                <ListLinksHeader />
             </div>
-            <div>
-                <ListLinksContentWidget/>
+            <div className="flex flex-col w-full">
+                <ListLinksItem/>
             </div>
         </div>
     )

@@ -2,7 +2,7 @@ import LogoSvg from '../assets/logo.svg';
 
 export function Header() {
   return (
-    <header className="w-full flex justify-center py-6">
+    <header className="w-full flex justify-start py-6">
       <img 
         src={LogoSvg} 
         alt="Brevly Logo" 

@@ -1,10 +1,10 @@
 import { LinkIcon } from '@phosphor-icons/react'
 
-export function EmptyLinksListWidget() {
+export function EmptyLinksList() {
     return (
-        <div>
-            <LinkIcon weight='bold' size={32}/>
-            <span>THERE IS NO LINKS REGISTERED YET</span>
+        <div className="flex flex-col items-center justify-center gap-4">
+            <LinkIcon weight='bold' size={32} className='text-gray-400'/>
+            <span className='text-xs text-gray-500'>THERE IS NO LINKS REGISTERED YET</span>
         </div>
     )
 }

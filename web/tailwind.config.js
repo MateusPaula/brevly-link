@@ -9,7 +9,9 @@ export default {
         sans: ['Open Sans', ...theme.fontFamily.sans]
       },
       colors: {
-        'blue-base': '#2C4091'
+        'blue-base': '#2C46B1',
+        'blue-dark': '#2C4091',
+        'danger': '#B12C4D'
       }
     },
   },
