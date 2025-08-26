@@ -1,4 +1,4 @@
-export function LinkShortnerWidget() {
+export function LinkShortnerCard() {
 
   const originalUrl = 'https://www.google.com'
   const shortUrl = ''
