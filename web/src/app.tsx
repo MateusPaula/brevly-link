@@ -10,6 +10,12 @@ export function App() {
       {/* Header container with max width matching the cards below */}
       <div className="w-full max-w-5xl mx-auto mb-6">
         <Header />
+      <button 
+          onClick={() => setLoadingCurrentLinks(!loadingCurrentLinks)}
+          className="mt-4 px-4 py-2 bg-blue-base text-white rounded-lg hover:bg-blue-dark transition-colors"
+        >
+          {loadingCurrentLinks ? 'Parar Loading' : 'Iniciar Loading'}
+        </button>
       </div>
       
       {/* Cards container with responsive layout */}
