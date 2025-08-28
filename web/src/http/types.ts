@@ -1,12 +1,15 @@
 export interface Link {
-    id: string;
     originalUrl: string;
     shortUrl: string;
     visits: number;
     createdAt: string;
-    updatedAt: string;
   }
   
+export interface getAllLinksResponse {
+    links: Link[];
+    total: number;
+}
+
   export interface CreateLinkRequest {
     originalUrl: string;
     shortUrl: string;

@@ -11,7 +11,6 @@ async function request<T>(
     
     const config: RequestInit = {
       headers: {
-        'Content-Type': 'application/json',
         ...options.headers,
       },
       ...options,
@@ -22,37 +21,33 @@ async function request<T>(
       
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.log('errorData', errorData);
-        throw new Error(errorData.message);
-        // throw new ApiError(
-        //   errorData.message || `HTTP error! status: ${response.status}`,
-        //   response.status
-        // );
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
       }
   
       return await response.json();
     } catch (error) {
-        console.log('error', error);
-    //   if (error instanceof ApiError) {
-    //     throw error;
-    //   }
+      if (error instanceof Error) {
+        throw error;
+      }
       
-    //   throw new ApiError(
-    //     error instanceof Error ? error.message : 'Network error occurred',
-    //     0
-    //   );
+      throw new Error('Network error occurred');
     }
   }
   
 
 export async function get<T>(endpoint: string): Promise<T> {
-    return request<T>(endpoint, { method: 'GET' });
+    return request<T>(endpoint, { method: 'GET', headers: {
+        'Content-Type': 'application/json',
+    } });
   }
   
   export async function post<T>(endpoint: string, data?: any): Promise<T> {
     return request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
   }
   

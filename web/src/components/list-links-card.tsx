@@ -4,69 +4,17 @@ import { EmptyLinksList } from "./empty-links-list";
 import { LoadingLinksState } from "./loading-links-state";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { useEffect, useRef, useState } from 'react';
+import { useLinks, useIsLinksEmpty } from "../store/links-store";
 
-type Link = {
-    shortUrl: string
-    originalUrl: string
-    visits: number
-}
-
-type ListLinksCardProps = {
-    loadingCurrentLinks?: boolean
-}
-
-export function ListLinksCard({ loadingCurrentLinks = false }: ListLinksCardProps) {
+export function ListLinksCard() {
     const [shouldShowScrollbar, setShouldShowScrollbar] = useState(false)
     const contentRef = useRef<HTMLDivElement>(null)
     const viewportRef = useRef<HTMLDivElement>(null)
+    
+    const { links, isLoading } = useLinks();
+    const isEmpty = useIsLinksEmpty();
 
-    const links: Link[] = [
-        {
-            shortUrl: 'localhost:3000/google',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google1',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google2',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google3',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google4',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google5',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google6',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google7',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        },
-        {
-            shortUrl: 'localhost:3000/google8',
-            originalUrl: 'https://www.google.com',
-            visits: 30
-        }
-    ]
+
 
     useEffect(() => {
         const checkScrollNeeded = () => {
@@ -89,7 +37,7 @@ export function ListLinksCard({ loadingCurrentLinks = false }: ListLinksCardProp
                 <ListLinksHeader />
             </div>
             
-            {loadingCurrentLinks ? (
+            {isLoading ? (
                 <LoadingLinksState />
             ) : (
                 <div className="flex flex-col w-full">
@@ -99,13 +47,16 @@ export function ListLinksCard({ loadingCurrentLinks = false }: ListLinksCardProp
                                 ref={viewportRef}
                                 className={`w-full max-h-[calc(100vh-18rem)] ${shouldShowScrollbar ? 'pr-6' : ''}`}
                             >
-                                {links.length === 0 ? <EmptyLinksList /> :
+                                {isEmpty ? <EmptyLinksList /> :
                                     <div ref={contentRef} className="w-full">
-                                        {links.map((link) => {
-                                            return (
-                                                <ListLinksItem shortUrl={link.shortUrl} originalUrl={link.originalUrl} visits={link.visits} key={link.shortUrl} />
-                                            )
-                                        })}
+                                        {links.map((link) => (
+                                            <ListLinksItem 
+                                                shortUrl={link.shortUrl} 
+                                                originalUrl={link.originalUrl} 
+                                                visits={link.visits} 
+                                                key={`${link.shortUrl}`} 
+                                            />
+                                        ))}
                                     </div>
                                 }
                             </ScrollArea.Viewport>

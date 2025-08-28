@@ -20,6 +20,7 @@ server.setValidatorCompiler(validatorCompiler)
 server.setSerializerCompiler(serializerCompiler)
 
 server.setErrorHandler((error, request, reply) => {
+  console.log('error Handler', error)
   if (hasZodFastifySchemaValidationErrors(error)) {
     return reply.status(400).send({
       message: 'Validation error',
@@ -33,6 +34,7 @@ server.setErrorHandler((error, request, reply) => {
 
 server.register(fastifyCors, {
   origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS']
 })
 
 server.register(fastifySwagger, {
