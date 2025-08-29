@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { useShallow } from 'zustand/shallow';
-import { createShortLink as createShortLinkApi, getAllLinks, deleteLink as deleteLinkApi } from '../http/links';
+import { createShortLink as createShortLinkApi, getAllLinks, deleteLink as deleteLinkApi, exportLinksToCSV } from '../http/links';
 import type { Link, CreateLinkRequest } from '../http/types';
+import { downloadUrl } from '../utils/download-url';
 
 type LinksState = {
-  // State
   links: Link[];
   total: number;
   isLoading: boolean;
@@ -14,11 +14,12 @@ type LinksState = {
     title: string;
   } | null;
   success: boolean;
+  deleteMessage: string;
   
-  // Actions
   createShortLink: (data: CreateLinkRequest) => Promise<void>;
   deleteLink: (shortUrl: string) => Promise<void>;
   fetchLinks: () => Promise<void>;
+  exportCsv: (searchQuery?: string) => Promise<void>;
 }
 
 const initialState = {
@@ -27,6 +28,7 @@ const initialState = {
   isLoading: false,
   error: null,
   success: false,
+  deleteMessage: '',
 };
 
 export const useLinksStore = create<LinksState, [['zustand/immer', never]]>(
@@ -72,12 +74,16 @@ export const useLinksStore = create<LinksState, [['zustand/immer', never]]>(
       set((state) => {
         state.isLoading = true;
         state.error = null;
+        state.deleteMessage = '';
       });
       
       try {
-        await deleteLinkApi(shortUrl);
+        const response = await deleteLinkApi(shortUrl);
         
-        // Fetch updated links list
+        set((state) => {
+          state.deleteMessage = response.message;
+        });
+        
         await get().fetchLinks();
         
       } catch (error) {
@@ -119,6 +125,23 @@ export const useLinksStore = create<LinksState, [['zustand/immer', never]]>(
         });
       }
     },
+
+    exportCsv: async () => {
+
+      try {
+        const { reportUrl } = await exportLinksToCSV();
+        if (reportUrl) {
+          downloadUrl(reportUrl);
+        } 
+      } catch (error) {
+        set((state) => {
+          state.error = {
+            message: error instanceof Error ? error.message : 'Failed to export CSV',
+            title: 'Export CSV Error'
+          };
+        });
+      }
+    },
   }))
 );
 
@@ -129,6 +152,7 @@ export const useLinks = () => {
       total: store.total,
       isLoading: store.isLoading,
       fetchLinks: store.fetchLinks,
+      exportCsv: store.exportCsv,
     }))
   );
 };
@@ -148,6 +172,7 @@ export const useLinkStatus = () => {
     useShallow(store => ({
       error: store.error,
       success: store.success,
+      deleteMessage: store.deleteMessage,
       isLoading: store.isLoading,
     }))
   );

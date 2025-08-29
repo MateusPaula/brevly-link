@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as Toast from "@radix-ui/react-toast";
-import { X } from "@phosphor-icons/react";
+import { InfoIcon, X } from "@phosphor-icons/react";
 import { tv } from "tailwind-variants";
 
 const toastVariants = tv({
@@ -38,14 +38,20 @@ export function ToastDemo({ title, description, shouldOpen, className, variant =
 				onOpenChange={setOpen}
 				duration={3000}
 			>
-				<Toast.Title className="text-md font-bold leading-tight">
-					{title}
-				</Toast.Title>
+				<div className="flex flex-row items-center gap-2">
+					<InfoIcon size={24} />
+					<div className="flex flex-col gap-1">
+						<Toast.Title className="text-md font-bold leading-tight">
+							{title}
+						</Toast.Title>
 
+						
+						<Toast.Description className="text-sm opacity-90 leading-relaxed">
+							{description}
+						</Toast.Description>
+					</div>
+				</div>
 				
-				<Toast.Description className="text-sm opacity-90 leading-relaxed">
-					{description}
-				</Toast.Description>
 			</Toast.Root>
 			
 			<Toast.Viewport className="fixed bottom-0 right-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-2.5 p-[var(--viewport-padding)] outline-none [--viewport-padding:_25px]" />

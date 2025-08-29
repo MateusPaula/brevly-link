@@ -35,19 +35,15 @@ async function request<T>(
   }
   
 
-export async function get<T>(endpoint: string): Promise<T> {
-    return request<T>(endpoint, { method: 'GET', headers: {
-        'Content-Type': 'application/json',
-    } });
+export async function get<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    return request<T>(endpoint, { method: 'GET', ...options });
   }
   
-  export async function post<T>(endpoint: string, data?: any): Promise<T> {
+  export async function post<T>(endpoint: string, data?: any, options?: RequestInit): Promise<T> {
     return request<T>(endpoint, {
       method: 'POST',
       body: data ? JSON.stringify(data) : undefined,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      ...options,
     });
   }
   

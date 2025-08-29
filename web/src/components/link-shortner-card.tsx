@@ -124,13 +124,13 @@ export function LinkShortnerCard() {
           
           <Form.Message match="valueMissing" className="flex flex-row items-center gap-2">
             <WarningIcon size={16} className="text-danger" />
-            <span className="text-sm text-gray-600">Enter a short URL with no whitespaces and special characters.</span>
+            <span className="text-sm text-gray-600">Enter a valid short URL with no special characters</span>
           </Form.Message>
 
         
           <Form.Message match={validateShortUrl} className="flex flex-row items-center gap-2">
             <WarningIcon size={16} className="text-danger" />
-            <span className="text-sm text-gray-600">Enter a short URL with no whitespaces and special characters.</span>
+            <span className="text-sm text-gray-600">Enter a valid short URL</span>
           </Form.Message>
         </Form.Field>
         

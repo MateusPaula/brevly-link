@@ -2,9 +2,10 @@ import { ListLinksItem } from "./list-links-item";
 import { ListLinksHeader } from "./list-links-header";
 import { EmptyLinksList } from "./empty-links-list";
 import { LoadingLinksState } from "./loading-links-state";
+import { ToastDemo } from "./ui/toast";
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import { useEffect, useRef, useState } from 'react';
-import { useLinks, useIsLinksEmpty } from "../store/links-store";
+import { useLinks, useIsLinksEmpty, useLinkStatus } from "../store/links-store";
 
 export function ListLinksCard() {
     const [shouldShowScrollbar, setShouldShowScrollbar] = useState(false)
@@ -13,6 +14,7 @@ export function ListLinksCard() {
     
     const { links, isLoading } = useLinks();
     const isEmpty = useIsLinksEmpty();
+    const { deleteMessage } = useLinkStatus();
 
 
 
@@ -67,6 +69,13 @@ export function ListLinksCard() {
                     </div>
                 </div>
             )}
+            
+            <ToastDemo 
+                shouldOpen={!!deleteMessage} 
+                title="Link deleted!" 
+                description={deleteMessage} 
+                variant="success" 
+            />
         </div>
     )
 }
