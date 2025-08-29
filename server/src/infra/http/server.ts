@@ -13,6 +13,7 @@ import { increaseLinkVisitsRoute } from '@/infra/http/routes/increase-link-visit
 import { createShortLinkRoute } from '@/infra/http/routes/create-short-link'
 import { deleteLinkRoute } from '@/infra/http/routes/delete-link'
 import { exportLinksRoute } from '@/infra/http/routes/export-links'
+import { redirectLinkRoute } from '@/infra/http/routes/redirect-link'
 
 const server = fastify()
 
@@ -56,6 +57,7 @@ server.register(increaseLinkVisitsRoute)
 server.register(createShortLinkRoute)
 server.register(deleteLinkRoute)
 server.register(exportLinksRoute)
+server.register(redirectLinkRoute)
 
 server.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
   console.log('HTTP server running!')

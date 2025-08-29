@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file .env src/infra/http/server.ts",
+    "build": "tsc",
+    "start": "node dist/infra/http/server.js",
     "test": "dotenv -e .env.test vitest run",
     "test:watch": "vitest",
     "db:generate": "drizzle-kit generate",
