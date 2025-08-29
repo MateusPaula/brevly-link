@@ -56,8 +56,7 @@ export async function get<T>(endpoint: string, options?: RequestInit): Promise<T
     const response = await fetch(url);
     
     if (!response.ok) {
-      console.log(`HTTP error! status: ${response.status}`);
-      // throw new ApiError(`HTTP error! status: ${response.status}`, response.status);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     return await response.blob();

@@ -22,7 +22,6 @@ export async function increaseLinkVisits(
 ): Promise<Either<LinkNotFoundError, IncreaseLinkVisitsOutput>> {
   const { shortUrl } = increaseLinkVisitsInput.parse(input)
 
-  // TODO: Get the link from database and increase the visits
   const link = await db
     .select()
     .from(schema.links)

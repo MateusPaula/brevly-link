@@ -1,5 +1,5 @@
 
-import { get, post, deleteRequest, downloadFile } from './api';
+import { get, post, deleteRequest } from './api';
 import { type Link, type CreateLinkRequest, type getAllLinksResponse } from './types';
 
 export async function getAllLinks(): Promise<getAllLinksResponse> {

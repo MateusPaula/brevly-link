@@ -1,27 +1,55 @@
-# Use Node.js LTS version
-FROM node:20-alpine
+#imagem rep:versão
+FROM node:20.18 AS base
 
-# Install pnpm and curl for health check
-RUN npm install -g pnpm && apk add --no-cache curl
+RUN npm i -g pnpm
 
-# Set working directory
-WORKDIR /app
+FROM base AS dependencies
 
-# Copy package files
+# Criando um workspace do nosso app
+WORKDIR /usr/src/app
+
+# o `./` referencia o WORKDIR
 COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
-# Copy source code
+FROM base AS build
+
+WORKDIR /usr/src/app
+
+# copiar tudo da raiz do projeto para a raíz do WORKDIR
 COPY . .
+# Copia a node modules gerada no passo de install (dependencies)
+COPY --from=dependencies /usr/src/app/node_modules ./node_modules
 
-# Expose port
+RUN pnpm build
+# descarta as devDependencies
+RUN pnpm prune --prod 
+
+# Nós precisamos usar o path completo se não for do dockerhub
+FROM node:20-alpine3.21 AS deploy
+
+USER 1000
+
+WORKDIR /usr/src/app
+
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/package.json ./package.json
+
+# Cria uma variável de ambiente dentro do container
+ENV CLOUDFLARE_ACCESS_KEY_ID="#"
+ENV CLOUDFLARE_SECRET_ACCESS_KEY="#"
+ENV CLOUDFLARE_BUCKET="#"
+ENV CLOUDFLARE_ACCOUNT_ID="#"
+ENV CLOUDFLARE_PUBLIC_URL="http://localhost"
+ENV POSTGRES_PASSWORD="password"
+ENV POSTGRES_USER="postgres"
+ENV POSTGRES_DB="brevly"
+ENV DATABASE_URL="postgresql://postgres:password@localhost:5432/brevly"
+
+
 EXPOSE 3333
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3333/docs || exit 1
-
-# Start the application using tsx (since we don't build to JS)
-CMD ["pnpm", "dev"]
+# Comando que vai segurar a execução do container
+CMD ["dist/infra/http/server.js"]

@@ -4,7 +4,6 @@ export const downloadUrl = async (url: string) => {
       const blob = await response.blob()
       const link = document.createElement('a')
   
-      // Adicionando esse lógica para retornar a extensão correta do arquivo
       const urlObj = new URL(url)
       const pathname = urlObj.pathname
       const segments = pathname.split('/').filter(segment => segment.length > 0)

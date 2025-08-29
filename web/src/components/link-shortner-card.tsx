@@ -13,11 +13,9 @@ export function LinkShortnerCard() {
   const formRef = useRef<HTMLFormElement>(null);
   const BASE_SHORT_URL = 'brev.ly/';
 
-  // Reset form when success
   useEffect(() => {
     if (success && formRef.current) {
       formRef.current.reset();
-      // Reset the short URL field to have the base URL
       const shortUrlField = formRef.current.querySelector('input[name="shortUrl"]') as HTMLInputElement;
       if (shortUrlField) {
         shortUrlField.value = BASE_SHORT_URL;
@@ -44,7 +42,6 @@ export function LinkShortnerCard() {
   };
 
   const validateShortUrl = (value: string) => {
-    // Should return false to not show the error message
     return !(value?.trim() && value.length > 0);
   };
 
