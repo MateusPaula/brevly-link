@@ -65,6 +65,9 @@ export function ListLinksCard() {
                             <ScrollArea.Scrollbar className="flex touch-none select-none bg-white transition-colors duration-[160ms] ease-out data-[orientation=vertical]:w-4" orientation="vertical">
                                 <ScrollArea.Thumb className="relative flex-1 bg-blue-base before:absolute before:left-1/2 before:top-1/2 before:size-full before:min-h-11 before:-translate-x-1/2 before:-translate-y-1/2" />
                             </ScrollArea.Scrollbar>
+                            <ScrollArea.Scrollbar orientation="horizontal">
+                                <ScrollArea.Thumb  />
+                            </ScrollArea.Scrollbar>
                         </ScrollArea.Root>
                     </div>
                 </div>
